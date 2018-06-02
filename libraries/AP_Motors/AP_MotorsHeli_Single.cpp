@@ -24,32 +24,7 @@ extern const AP_HAL::HAL& hal;
 const AP_Param::GroupInfo AP_MotorsHeli_Single::var_info[] = {
     AP_NESTEDGROUPINFO(AP_MotorsHeli, 0),
 
-    // @Param: SV1_POS
-    // @DisplayName: Servo 1 Position
-    // @Description: Angular location of swash servo #1 - only used for H3 swash type
-    // @Range: -180 180
-    // @Units: deg
-    // @User: Standard
-    // @Increment: 1
-    AP_GROUPINFO("SV1_POS", 1, AP_MotorsHeli_Single, _servo1_pos, AP_MOTORS_HELI_SINGLE_SERVO1_POS),
-
-    // @Param: SV2_POS
-    // @DisplayName: Servo 2 Position
-    // @Description: Angular location of swash servo #2 - only used for H3 swash type
-    // @Range: -180 180
-    // @Units: deg
-    // @User: Standard
-    // @Increment: 1
-    AP_GROUPINFO("SV2_POS", 2, AP_MotorsHeli_Single, _servo2_pos, AP_MOTORS_HELI_SINGLE_SERVO2_POS),
-
-    // @Param: SV3_POS
-    // @DisplayName: Servo 3 Position
-    // @Description: Angular location of swash servo #3 - only used for H3 swash type
-    // @Range: -180 180
-    // @Units: deg
-    // @User: Standard
-    // @Increment: 1
-    AP_GROUPINFO("SV3_POS", 3, AP_MotorsHeli_Single, _servo3_pos, AP_MOTORS_HELI_SINGLE_SERVO3_POS),
+    // Indices 1-3 were used by servo position params and should not be used
 
     // @Param: TAIL_TYPE
     // @DisplayName: Tail Type
@@ -59,11 +34,11 @@ const AP_Param::GroupInfo AP_MotorsHeli_Single::var_info[] = {
     AP_GROUPINFO("TAIL_TYPE", 4, AP_MotorsHeli_Single, _tail_type, AP_MOTORS_HELI_SINGLE_TAILTYPE_SERVO),
 
     // @Param: SWASH_TYPE
-    // @DisplayName: Swash Type
-    // @Description: Swash Type Setting
-    // @Values: 0:H3 CCPM Adjustable, 1:H1 Straight Swash, 2:H3_140 CCPM
+    // @DisplayName: Swashplate Type
+    // @Description: Swashplate Type Setting
+    // @Values: 0:H3-120 CCPM, 1:H1, 2:H3-140 CCPM, 3:HR3-120 CCPM, 4:H3-90 CCPM, 5:HR3-90 CCPM
     // @User: Standard
-    AP_GROUPINFO("SWASH_TYPE", 5, AP_MotorsHeli_Single, _swash_type, AP_MOTORS_HELI_SINGLE_SWASH_H3),
+    AP_GROUPINFO("SWASH_TYPE", 5, AP_MotorsHeli_Single, _swash_type, AP_MOTORS_HELI_SINGLE_SWASH_H3_120),
 
     // @Param: GYR_GAIN
     // @DisplayName: External Gyro Gain
@@ -76,7 +51,7 @@ const AP_Param::GroupInfo AP_MotorsHeli_Single::var_info[] = {
 
     // @Param: PHANG
     // @DisplayName: Swashplate Phase Angle Compensation
-    // @Description: Only for H3 swashplate.  If pitching the swash forward induces a roll, this can be correct the problem
+    // @Description: Does not apply to H3-140. If pitching the swash forward induces a roll, this can be correct the problem
     // @Range: -30 30
     // @Units: deg
     // @User: Advanced
@@ -295,22 +270,58 @@ void AP_MotorsHeli_Single::calculate_scalars()
 // CCPM Mixers - calculate mixing scale factors by swashplate type
 void AP_MotorsHeli_Single::calculate_roll_pitch_collective_factors()
 {
-    if (_swash_type == AP_MOTORS_HELI_SINGLE_SWASH_H3) {                  //Three-Servo adjustable CCPM mixer factors
-        // aileron factors
-        _rollFactor[CH_1] = cosf(radians(_servo1_pos + 90 - _phase_angle));
-        _rollFactor[CH_2] = cosf(radians(_servo2_pos + 90 - _phase_angle));
-        _rollFactor[CH_3] = cosf(radians(_servo3_pos + 90 - _phase_angle));
-
-        // elevator factors
-        _pitchFactor[CH_1] = cosf(radians(_servo1_pos - _phase_angle));
-        _pitchFactor[CH_2] = cosf(radians(_servo2_pos - _phase_angle));
-        _pitchFactor[CH_3] = cosf(radians(_servo3_pos - _phase_angle));
-
-        // collective factors
+    if (_swash_type == AP_MOTORS_HELI_SINGLE_SWASH_H1) {
+        // collective factors for H1 straight outputs
+        _collectiveFactor[CH_1] = 0;
+        _collectiveFactor[CH_2] = 0;
+        _collectiveFactor[CH_3] = 1;
+    } else {
+         // collective factors for CCPM swash types
         _collectiveFactor[CH_1] = 1;
         _collectiveFactor[CH_2] = 1;
         _collectiveFactor[CH_3] = 1;
-    } else if (_swash_type == AP_MOTORS_HELI_SINGLE_SWASH_H3_140) {       //Three-Servo H3-140 CCPM mixer factors
+    }
+    if (_swash_type == AP_MOTORS_HELI_SINGLE_SWASH_H3_120) {          //H3-120 cyclic mixer factors
+        // aileron factors
+        _rollFactor[CH_1] = cosf(radians(30 - _phase_angle));
+        _rollFactor[CH_2] = cosf(radians(150 - _phase_angle));
+        _rollFactor[CH_3] = cosf(radians(-90 - _phase_angle));
+
+        // elevator factors
+        _pitchFactor[CH_1] = cosf(radians(-60 - _phase_angle));
+        _pitchFactor[CH_2] = cosf(radians(60 - _phase_angle));
+        _pitchFactor[CH_3] = cosf(radians(180 - _phase_angle));
+    } else if (_swash_type == AP_MOTORS_HELI_SINGLE_SWASH_HR3_120) {  //HR3-120 cyclic mixer factors
+        // aileron factors
+        _rollFactor[CH_1] = cosf(radians(90 - _phase_angle));
+        _rollFactor[CH_2] = cosf(radians(-150 - _phase_angle));
+        _rollFactor[CH_3] = cosf(radians(-30 - _phase_angle));
+
+        // elevator factors
+        _pitchFactor[CH_1] = cosf(radians(0 - _phase_angle));
+        _pitchFactor[CH_2] = cosf(radians(120 - _phase_angle));
+        _pitchFactor[CH_3] = cosf(radians(-120 - _phase_angle));
+    } else if (_swash_type == AP_MOTORS_HELI_SINGLE_SWASH_H3_90) {    //H3-90 cyclic mixer factors
+        // aileron factors
+        _rollFactor[CH_1] = cosf(radians(0 - _phase_angle));
+        _rollFactor[CH_2] = cosf(radians(180 - _phase_angle));
+        _rollFactor[CH_3] = cosf(radians(-90 - _phase_angle));
+
+        // elevator factors
+        _pitchFactor[CH_1] = cosf(radians(-90 - _phase_angle));
+        _pitchFactor[CH_2] = cosf(radians(90 - _phase_angle));
+        _pitchFactor[CH_3] = cosf(radians(180 - _phase_angle));
+     } else if (_swash_type == AP_MOTORS_HELI_SINGLE_SWASH_HR3_90) {  //HR3-90 cyclic mixer factors
+        // aileron factors
+        _rollFactor[CH_1] = cosf(radians(90 - _phase_angle));
+        _rollFactor[CH_2] = cosf(radians(180 - _phase_angle));
+        _rollFactor[CH_3] = cosf(radians(0 - _phase_angle));
+
+        // elevator factors
+        _pitchFactor[CH_1] = cosf(radians(0 - _phase_angle));
+        _pitchFactor[CH_2] = cosf(radians(90 - _phase_angle));
+        _pitchFactor[CH_3] = cosf(radians(-90 - _phase_angle));
+    } else if (_swash_type == AP_MOTORS_HELI_SINGLE_SWASH_H3_140) {   //H3-140 cyclic mixer factors
         // aileron factors
         _rollFactor[CH_1] = 1;
         _rollFactor[CH_2] = -1;
@@ -320,12 +331,7 @@ void AP_MotorsHeli_Single::calculate_roll_pitch_collective_factors()
         _pitchFactor[CH_1] = 1;
         _pitchFactor[CH_2] = 1;
         _pitchFactor[CH_3] = -1;
-
-        // collective factors
-        _collectiveFactor[CH_1] = 1;
-        _collectiveFactor[CH_2] = 1;
-        _collectiveFactor[CH_3] = 1;
-    } else {                                                              //H1 straight outputs, no mixing
+    } else {                                                          //H1 straight outputs, no mixing
         // aileron factors
         _rollFactor[CH_1] = 1;
         _rollFactor[CH_2] = 0;
@@ -335,11 +341,6 @@ void AP_MotorsHeli_Single::calculate_roll_pitch_collective_factors()
         _pitchFactor[CH_1] = 0;
         _pitchFactor[CH_2] = 1;
         _pitchFactor[CH_3] = 0;
-
-        // collective factors
-        _collectiveFactor[CH_1] = 0;
-        _collectiveFactor[CH_2] = 0;
-        _collectiveFactor[CH_3] = 1;
     }
 }
 

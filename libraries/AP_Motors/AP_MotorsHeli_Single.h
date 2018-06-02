@@ -13,15 +13,13 @@
 #define AP_MOTORS_HELI_SINGLE_EXTGYRO                          CH_7
 #define AP_MOTORS_HELI_SINGLE_TAILRSC                          CH_7
 
-// servo position defaults
-#define AP_MOTORS_HELI_SINGLE_SERVO1_POS                       -60
-#define AP_MOTORS_HELI_SINGLE_SERVO2_POS                       60
-#define AP_MOTORS_HELI_SINGLE_SERVO3_POS                       180
-
 // swash type definitions
-#define AP_MOTORS_HELI_SINGLE_SWASH_H3                         0
+#define AP_MOTORS_HELI_SINGLE_SWASH_H3_120                     0
 #define AP_MOTORS_HELI_SINGLE_SWASH_H1                         1
 #define AP_MOTORS_HELI_SINGLE_SWASH_H3_140                     2
+#define AP_MOTORS_HELI_SINGLE_SWASH_HR3_120                    3
+#define AP_MOTORS_HELI_SINGLE_SWASH_H3_90                      4
+#define AP_MOTORS_HELI_SINGLE_SWASH_HR3_90                     5
 
 // collective control direction definitions
 #define AP_MOTORS_HELI_SINGLE_COLLECTIVE_DIRECTION_NORMAL      0
@@ -138,12 +136,9 @@ protected:
     float _yaw_test = 0.0f;                     // over-ride for yaw output, used by servo_test function
 
     // parameters
-    AP_Int16        _servo1_pos;                // Angular location of swash servo #1
-    AP_Int16        _servo2_pos;                // Angular location of swash servo #2
-    AP_Int16        _servo3_pos;                // Angular location of swash servo #3
+    AP_Int8         _swash_type;                // Swash Type Setting
     AP_Int8         _collective_direction;      // Collective control direction, normal or reversed
     AP_Int16        _tail_type;                 // Tail type used: Servo, Servo with external gyro, direct drive variable pitch or direct drive fixed pitch
-    AP_Int8         _swash_type;                // Swash Type Setting
     AP_Int16        _ext_gyro_gain_std;         // PWM sent to external gyro on ch7 when tail type is Servo w/ ExtGyro
     AP_Int16        _ext_gyro_gain_acro;        // PWM sent to external gyro on ch7 when tail type is Servo w/ ExtGyro in ACRO
     AP_Int16        _phase_angle;               // Phase angle correction for rotor head.  If pitching the swash forward induces a roll, this can be correct the problem

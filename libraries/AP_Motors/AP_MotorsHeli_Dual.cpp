@@ -299,7 +299,7 @@ void AP_MotorsHeli_Dual::calculate_scalars()
 }
 
 // calculate_swash_factors - calculate factors based on swash type and servo position
-// To Do: support H3-140 swashplates in Heli Dual?
+// Heli Duals use adjustable servo positions as single frames may be joined back-to-back or back-to-front
 void AP_MotorsHeli_Dual::calculate_roll_pitch_collective_factors()
 {
     if (_dual_mode == AP_MOTORS_HELI_DUAL_MODE_TRANSVERSE) {
