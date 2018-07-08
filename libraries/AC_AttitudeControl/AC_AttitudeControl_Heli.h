@@ -9,17 +9,23 @@
 #include <Filter/Filter.h>
 
 // default rate controller PID gains
-#define AC_ATC_HELI_RATE_RP_P                       0.024f
-#define AC_ATC_HELI_RATE_RP_I                       0.6f
-#define AC_ATC_HELI_RATE_RP_D                       0.001f
-#define AC_ATC_HELI_RATE_RP_IMAX                    1.0f
-#define AC_ATC_HELI_RATE_RP_FF                      0.060f
-#define AC_ATC_HELI_RATE_RP_FILT_HZ                 20.0f
-#define AC_ATC_HELI_RATE_YAW_P                      0.18f
-#define AC_ATC_HELI_RATE_YAW_I                      0.12f
+#define AC_ATC_HELI_RATE_R_P                        0.035f
+#define AC_ATC_HELI_RATE_R_I                        0.32f
+#define AC_ATC_HELI_RATE_R_D                        0.0005f
+#define AC_ATC_HELI_RATE_R_IMAX                     0.44f
+#define AC_ATC_HELI_RATE_R_FF                       0.15f
+#define AC_ATC_HELI_RATE_R_FILT_HZ                  13.0f
+#define AC_ATC_HELI_RATE_P_P                        0.04f
+#define AC_ATC_HELI_RATE_P_I                        0.35f
+#define AC_ATC_HELI_RATE_P_D                        0.0008f
+#define AC_ATC_HELI_RATE_P_IMAX                     0.44f
+#define AC_ATC_HELI_RATE_P_FF                       0.15f
+#define AC_ATC_HELI_RATE_P_FILT_HZ                  12.0f
+#define AC_ATC_HELI_RATE_YAW_P                      0.25f
+#define AC_ATC_HELI_RATE_YAW_I                      0.30f
 #define AC_ATC_HELI_RATE_YAW_D                      0.003f
-#define AC_ATC_HELI_RATE_YAW_IMAX                   1.0f
-#define AC_ATC_HELI_RATE_YAW_FF                     0.024f
+#define AC_ATC_HELI_RATE_YAW_IMAX                   0.33f
+#define AC_ATC_HELI_RATE_YAW_FF                     0.09f
 #define AC_ATC_HELI_RATE_YAW_FILT_HZ                20.0f
 
 #define AC_ATTITUDE_HELI_ANGLE_LIMIT_THROTTLE_MAX   0.95f    // Heli's use 95% of max collective before limiting frame angle
@@ -37,8 +43,8 @@ public:
                         float dt) :
         AC_AttitudeControl(ahrs, aparm, motors, dt),
         _passthrough_roll(0), _passthrough_pitch(0), _passthrough_yaw(0),
-        _pid_rate_roll(AC_ATC_HELI_RATE_RP_P, AC_ATC_HELI_RATE_RP_I, AC_ATC_HELI_RATE_RP_D, AC_ATC_HELI_RATE_RP_IMAX, AC_ATC_HELI_RATE_RP_FILT_HZ, dt, AC_ATC_HELI_RATE_RP_FF),
-        _pid_rate_pitch(AC_ATC_HELI_RATE_RP_P, AC_ATC_HELI_RATE_RP_I, AC_ATC_HELI_RATE_RP_D, AC_ATC_HELI_RATE_RP_IMAX, AC_ATC_HELI_RATE_RP_FILT_HZ, dt, AC_ATC_HELI_RATE_RP_FF),
+        _pid_rate_roll(AC_ATC_HELI_RATE_R_P, AC_ATC_HELI_RATE_R_I, AC_ATC_HELI_RATE_R_D, AC_ATC_HELI_RATE_R_IMAX, AC_ATC_HELI_RATE_R_FILT_HZ, dt, AC_ATC_HELI_RATE_R_FF),
+        _pid_rate_pitch(AC_ATC_HELI_RATE_P_P, AC_ATC_HELI_RATE_P_I, AC_ATC_HELI_RATE_P_D, AC_ATC_HELI_RATE_P_IMAX, AC_ATC_HELI_RATE_P_FILT_HZ, dt, AC_ATC_HELI_RATE_P_FF),
         _pid_rate_yaw(AC_ATC_HELI_RATE_YAW_P, AC_ATC_HELI_RATE_YAW_I, AC_ATC_HELI_RATE_YAW_D, AC_ATC_HELI_RATE_YAW_IMAX, AC_ATC_HELI_RATE_YAW_FILT_HZ, dt, AC_ATC_HELI_RATE_YAW_FF),
         pitch_feedforward_filter(AC_ATTITUDE_HELI_RATE_RP_FF_FILTER),
         roll_feedforward_filter(AC_ATTITUDE_HELI_RATE_RP_FF_FILTER),

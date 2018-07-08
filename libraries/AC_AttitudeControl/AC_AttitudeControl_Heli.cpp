@@ -26,14 +26,14 @@ const AP_Param::GroupInfo AC_AttitudeControl_Heli::var_info[] = {
     // @Description: Roll axis rate controller I gain.  Corrects long-term difference in desired roll rate vs actual roll rate
     // @Range: 0.01 0.6
     // @Increment: 0.01
-    // @User: Standard
+    // @User: Advanced
 
     // @Param: RAT_RLL_IMAX
     // @DisplayName: Roll axis rate controller I gain maximum
     // @Description: Roll axis rate controller I gain maximum.  Constrains the maximum motor output that the I gain will output
     // @Range: 0 1
     // @Increment: 0.01
-    // @User: Standard
+    // @User: Advanced
 
     // @Param: RAT_RLL_D
     // @DisplayName: Roll axis rate controller D gain
@@ -69,14 +69,14 @@ const AP_Param::GroupInfo AC_AttitudeControl_Heli::var_info[] = {
     // @Description: Pitch axis rate controller I gain.  Corrects long-term difference in desired pitch rate vs actual pitch rate
     // @Range: 0.01 0.6
     // @Increment: 0.01
-    // @User: Standard
+    // @User: Advanced
 
     // @Param: RAT_PIT_IMAX
     // @DisplayName: Pitch axis rate controller I gain maximum
     // @Description: Pitch axis rate controller I gain maximum.  Constrains the maximum motor output that the I gain will output
     // @Range: 0 1
     // @Increment: 0.01
-    // @User: Standard
+    // @User: Advanced
 
     // @Param: RAT_PIT_D
     // @DisplayName: Pitch axis rate controller D gain
@@ -112,14 +112,14 @@ const AP_Param::GroupInfo AC_AttitudeControl_Heli::var_info[] = {
     // @Description: Yaw axis rate controller I gain.  Corrects long-term difference in desired yaw rate vs actual yaw rate
     // @Range: 0.01 0.06
     // @Increment: 0.01
-    // @User: Standard
+    // @User: Advanced
 
     // @Param: RAT_YAW_IMAX
     // @DisplayName: Yaw axis rate controller I gain maximum
     // @Description: Yaw axis rate controller I gain maximum.  Constrains the maximum motor output that the I gain will output
     // @Range: 0 1
     // @Increment: 0.01
-    // @User: Standard
+    // @User: Advanced
 
     // @Param: RAT_YAW_D
     // @DisplayName: Yaw axis rate controller D gain
