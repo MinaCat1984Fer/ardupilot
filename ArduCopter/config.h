@@ -66,7 +66,8 @@
   # define WP_YAW_BEHAVIOR_DEFAULT              WP_YAW_BEHAVIOR_LOOK_AHEAD
   # define THR_MIN_DEFAULT                      0
   # define AUTOTUNE_ENABLED                     DISABLED
-  # define ACCEL_Z_P                            0.30f
+  # define POSHOLD_BRAKE_RATE_DEFAULT           4       // default POSHOLD_BRAKE_RATE param value.  Rotation rate during braking in deg/sec
+  # define POSHOLD_BRAKE_ANGLE_DEFAULT          800     // default POSHOLD_BRAKE_ANGLE param value.  Max lean angle during braking in centi-degrees
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
