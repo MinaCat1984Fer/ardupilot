@@ -13,6 +13,8 @@
 // maximum velocities and accelerations
 #define WPNAV_ACCELERATION              100.0f      // defines the default velocity vs distant curve.  maximum acceleration in cm/s/s that position controller asks for from acceleration controller
 #define WPNAV_ACCELERATION_MIN           50.0f      // minimum acceleration in cm/s/s - used for sanity checking _wp_accel parameter
+#define WPNAV_ACCELERATION_SPD_CHG      100.0f      // acceleration used for speed change requests in cm/s/s
+
 
 #define WPNAV_WP_SPEED                  500.0f      // default horizontal speed between waypoints in cm/s
 #define WPNAV_WP_SPEED_MIN               20.0f      // minimum horizontal speed between waypoints in cm/s
@@ -279,6 +281,7 @@ protected:
     AP_Float    _wp_radius_cm;          // distance from a waypoint in cm that, when crossed, indicates the wp has been reached
     AP_Float    _wp_accel_cmss;          // horizontal acceleration in cm/s/s during missions
     AP_Float    _wp_accel_z_cmss;        // vertical acceleration in cm/s/s during missions
+    AP_Float    _wp_desired_speed_cms;
 
     // waypoint controller internal variables
     uint32_t    _wp_last_update;        // time of last update_wpnav call
