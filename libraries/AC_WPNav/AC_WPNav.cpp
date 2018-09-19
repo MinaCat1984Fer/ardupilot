@@ -822,6 +822,26 @@ bool AC_WPNav::update_spline()
         dt = 0.0f;
     }
 
+    if (_wp_desired_speed_cms > _wp_speed_cms) {
+        _wp_speed_cms = _wp_speed_cms + WPNAV_ACCELERATION_SPD_CHG * dt;
+        if (_wp_speed_cms > _wp_desired_speed_cms) {
+            _wp_speed_cms = _wp_desired_speed_cms;
+        }
+        //update position controller speed
+        _pos_control.set_speed_xy(_wp_speed_cms);
+        // flag that wp leash must be recalculated
+        _flags.recalc_wp_leash = true;
+    } else if (_wp_desired_speed_cms < _wp_speed_cms) {
+        _wp_speed_cms = _wp_speed_cms - WPNAV_ACCELERATION_SPD_CHG * dt;
+        if (_wp_speed_cms < _wp_desired_speed_cms) {
+            _wp_speed_cms = _wp_desired_speed_cms;
+        }
+        //update position controller speed
+        _pos_control.set_speed_xy(_wp_speed_cms);
+        // flag that wp leash must be recalculated
+        _flags.recalc_wp_leash = true;
+    }
+
     // advance the target if necessary
     if (!advance_spline_target_along_track(dt)) {
         // To-Do: handle failure to advance along track (due to missing terrain data)
