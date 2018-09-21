@@ -1028,7 +1028,7 @@ void AC_WPNav::calc_slow_down_distance(float speed_cms, float accel_cmss)
 	}
     // To-Do: should we use a combination of horizontal and vertical speeds?
     // To-Do: update this automatically when speed or acceleration is changed
-    _slow_down_dist = speed_cms * speed_cms / (4.0f*accel_cmss);
+    _slow_down_dist = speed_cms * speed_cms / (1.0f*accel_cmss);
 }
 
 /// get_slow_down_speed - returns target speed of target point based on distance from the destination (in cm)
@@ -1040,7 +1040,7 @@ float AC_WPNav::get_slow_down_speed(float dist_from_dest_cm, float accel_cmss)
     }
 
     // calculate desired speed near destination
-    float target_speed = safe_sqrt(dist_from_dest_cm * 4.0f * accel_cmss);
+    float target_speed = safe_sqrt(dist_from_dest_cm * 1.0f * accel_cmss);
 
     // ensure desired speed never becomes too low
     if (target_speed < WPNAV_WP_TRACK_SPEED_MIN) {
