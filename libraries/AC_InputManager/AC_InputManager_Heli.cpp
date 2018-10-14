@@ -21,7 +21,7 @@ const AP_Param::GroupInfo AC_InputManager_Heli::var_info[] = {
     // @Param: STAB_COL_2
     // @DisplayName: Stabilize Mode Collective Point 2
     // @Description: Helicopter's collective pitch setting at mid-low throttle input in Stabilize mode
-    // @Range: 0 500
+    // @Range: 0 650
     // @Units: d%
     // @Increment: 1
     // @User: Standard
