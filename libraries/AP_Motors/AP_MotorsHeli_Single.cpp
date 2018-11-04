@@ -241,6 +241,11 @@ void AP_MotorsHeli_Single::set_desired_rotor_speed(float desired_speed)
     _tail_rotor.set_desired_speed(_direct_drive_tailspeed*0.001f);
 }
 
+void AP_MotorsHeli_Single::set_rpm(int16_t measured_rpm)
+{
+	_main_rotor.set_measured_rpm(measured_rpm);
+}
+
 // calculate_scalars - recalculates various scalers used.
 void AP_MotorsHeli_Single::calculate_armed_scalars()
 {
@@ -253,7 +258,10 @@ void AP_MotorsHeli_Single::calculate_armed_scalars()
     _main_rotor.set_critical_speed(_rsc_critical*0.001f);
     _main_rotor.set_idle_output(_rsc_idle_output*0.001f);
     _main_rotor.set_throttle_curve(thrcrv, (uint16_t)_rsc_slewrate.get());
-}
+    _main_rotor.set_governor_speed(_rsc_governor_speed);
+    _main_rotor.set_governor_gain(_rsc_governor_gain);
+    _main_rotor.set_governor_tc(_rsc_governor_tc);
+   }
 
 
 // calculate_scalars - recalculates various scalers used.

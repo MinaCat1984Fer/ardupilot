@@ -69,6 +69,9 @@ public:
     // set_desired_rotor_speed - sets target rotor speed as a number from 0 ~ 1
     void set_desired_rotor_speed(float desired_speed) override;
 
+    // set speed from rpm sensor
+    void set_rpm(int16_t measured_rpm);
+
     // get_main_rotor_speed - gets estimated or measured main rotor speed
     float get_main_rotor_speed() const  override { return _main_rotor.get_rotor_speed(); }
 

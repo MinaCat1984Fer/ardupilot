@@ -89,6 +89,27 @@ void AP_MotorsHeli_RSC::output(RotorControlState state)
                 // throttle output from throttle curve based on collective position
                     float desired_throttle = calculate_desired_throttle(_collective_in);
                     _control_output = _idle_output + (_rotor_ramp_output * (desired_throttle - _idle_output));
+            } else if (_control_mode == ROTOR_CONTROL_MODE_CLOSED_LOOP_POWER_OUTPUT) {
+                // closed loop governor throttle control
+                    float desired_throttle = calculate_desired_throttle(_collective_in);
+            	    float governor_droop = (_measured_rpm - _governor_speed);
+            	    float droop_percent = (_measured_rpm / _governor_speed);
+            	// governor engaged if within 10% of set speed
+                if ((droop_percent > 0.9) && (droop_percent < 1.1)) {
+            	    if (governor_droop < 0) {
+            	        _governor_output = ((governor_droop * governor_droop) * 0.00001f) * _governor_gain;
+            	    } else if (governor_droop > 0) {
+            	        _governor_output = ((governor_droop * governor_droop) * -0.00001f) * _governor_gain;
+            	// governor buffer - shut down the governor output if within 0.5% of set speed
+            	    } else if ((droop_percent > 0.995f) && (droop_percent < 1.005f)) {
+                        _governor_output = 0.0f;
+                    }
+//            	    _governor_output = constrain_float(_governor_output,-0.5f,0.5f);
+                    _control_output = _idle_output + (_rotor_ramp_output * ((desired_throttle * _governor_tc * .01f) + _governor_output - _idle_output));
+                } else {
+                // we fall back to the throttle curve if headspeed is not within 10% of set speed
+                    _control_output = _idle_output + (_rotor_ramp_output * (desired_throttle - _idle_output));
+                }
             }
             break;
     }

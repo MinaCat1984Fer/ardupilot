@@ -77,7 +77,7 @@ const AP_Param::GroupInfo AP_MotorsHeli::var_info[] = {
     // @Param: RSC_MODE
     // @DisplayName: Rotor Speed Control Mode
     // @Description: Determines the method of rotor speed control
-    // @Values: 1:Ch8 Input, 2:SetPoint, 3:Throttle Curve
+    // @Values: 1:Ch8 Input, 2:SetPoint, 3:Throttle Curve, 4: Governor
     // @User: Standard
     AP_GROUPINFO("RSC_MODE", 8, AP_MotorsHeli, _rsc_mode, (int8_t)ROTOR_CONTROL_MODE_SPEED_PASSTHROUGH),
 
@@ -192,6 +192,30 @@ const AP_Param::GroupInfo AP_MotorsHeli::var_info[] = {
     // @Increment: 10
     // @User: Standard
     AP_GROUPINFO("RSC_THRCRV_100", 24, AP_MotorsHeli, _rsc_thrcrv[4], AP_MOTORS_HELI_RSC_THRCRV_100_DEFAULT),
+
+    // @Param: RSC_GOV_SPEED
+    // @DisplayName: Governor RPM Setting
+    // @Description: Main rotor rpm setting that governor maintains when engaged
+    // @Range: 800 3500
+    // @Increment: 10
+    // @User: Standard
+    AP_GROUPINFO("RSC_GOV_SPEED", 25, AP_MotorsHeli, _rsc_governor_speed, AP_MOTORS_HELI_RSC_GOVERNOR_SPEED),
+
+    // @Param: RSC_GOV_GAIN
+    // @DisplayName: Governor Gain Setting
+    // @Description: Gain percentage for response to governor droop, 0-100%. A value of zero disables the governor.
+    // @Range: 0 100
+    // @Increment: 1
+    // @User: Standard
+    AP_GROUPINFO("RSC_GOV_GAIN", 26, AP_MotorsHeli, _rsc_governor_gain, AP_MOTORS_HELI_RSC_GOVERNOR_GAIN),
+    
+    // @Param: RSC_GOV_TC
+    // @DisplayName: Governor Throttle Curve Weighting 
+    // @Description: Percentage of throttle curve weighting in governor output calculations
+    // @Range: 50 100
+    // @Increment: 1
+    // @User: Standard
+    AP_GROUPINFO("RSC_GOV_TC", 27, AP_MotorsHeli, _rsc_governor_tc, AP_MOTORS_HELI_RSC_GOVERNOR_TC),
 
     AP_GROUPEND
 };
