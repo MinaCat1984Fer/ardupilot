@@ -114,6 +114,12 @@ public:
 
     // get_main_rotor_speed - gets estimated or measured main rotor speed
     virtual float get_main_rotor_speed() const = 0;
+	
+	//get main rotor governor output
+    virtual float get_governor_output() const = 0;
+
+    //get main rotor governor droop
+    virtual float get_governor_droop() const = 0;
 
     // return true if the main rotor is up to speed
     bool rotor_runup_complete() const { return _heliflags.rotor_runup_complete; }

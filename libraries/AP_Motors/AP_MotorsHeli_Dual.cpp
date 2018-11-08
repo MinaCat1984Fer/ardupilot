@@ -265,6 +265,9 @@ void AP_MotorsHeli_Dual::calculate_armed_scalars()
     _rotor.set_critical_speed(_rsc_critical*0.001f);
     _rotor.set_idle_output(_rsc_idle_output*0.001f);
     _rotor.set_throttle_curve(thrcrv, (uint16_t)_rsc_slewrate.get());
+	_rotor.set_governor_speed(_rsc_governor_speed);
+    _rotor.set_governor_gain(_rsc_governor_gain);
+    _rotor.set_governor_tc(_rsc_governor_tc);
 }
 
 // calculate_scalars

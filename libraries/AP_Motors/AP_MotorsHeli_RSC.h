@@ -56,6 +56,12 @@ public:
 
     // get_desired_speed
     float       get_desired_speed() const { return _desired_speed; }
+	
+	// get governor output
+    float       get_governor_output() const { return _governor_output; }
+
+    // get governor droop
+    float       get_governor_droop() const { return (_measured_rpm - _governor_speed); }
 
     // pass actual rotor speed
     void        set_measured_rpm(int16_t measured_rpm) {_measured_rpm = measured_rpm;}

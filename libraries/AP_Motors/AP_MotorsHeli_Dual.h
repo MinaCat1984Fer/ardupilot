@@ -69,6 +69,12 @@ public:
 
     // get_desired_rotor_speed - gets target rotor speed as a number from 0 ~ 1000
     float get_desired_rotor_speed() const  override { return _rotor.get_rotor_speed(); }
+	
+	// get governor output
+    float get_governor_output() const { return _rotor.get_governor_output(); }
+
+    //get governor droop
+    float get_governor_droop() const { return _rotor.get_governor_droop(); }
 
     // rotor_speed_above_critical - return true if rotor speed is above that critical for flight
     bool rotor_speed_above_critical() const  override { return _rotor.get_rotor_speed() > _rotor.get_critical_speed(); }
